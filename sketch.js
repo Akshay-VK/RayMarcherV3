@@ -7,6 +7,7 @@ function setup(){
     noStroke();
 }
 function draw(){
+    theShader.setUniform('res',[width,height]);
     theShader.setUniform('u_poss',[mouseX,-mouseY+height]);
     shader(theShader);
     rect(-width/2,-height/2,width/2,height/2);

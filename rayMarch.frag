@@ -1,6 +1,7 @@
 #ifdef GL_ES
 precision mediump float;
 #endif
+uniform vec2 res;
 uniform vec2 u_poss;
 
 float sphereSDF(vec3 p, vec3 c, float r){
@@ -29,6 +30,6 @@ vec3 rayMarch(vec3 o, vec3 dir){
 
 void main(){
     //vec2 col = normalize(gl_FragCoord.xy-u_poss);
-    vec3 colour = rayMarch(vec3())
+    vec3 colour = rayMarch(vec3(gl_FragCoord.xy/res,-2.0),vec3(1.0,0.0,0.0))
     gl_FragColor=vec4(col,0.0,1.0);
 }
