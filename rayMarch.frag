@@ -11,7 +11,7 @@ float sceneSDF(vec3 p){
     return sphereSDF(p, vec3(0.0), 1.0);
 }
 vec3 rayMarch(vec3 o, vec3 dir){
-    float MAX_DIST=0.0;
+    float MAX_DIST=100.0;
     int MAX_ITER = 10;
     float EPSILON=0.001;
     float dist=0.0;
@@ -30,6 +30,6 @@ vec3 rayMarch(vec3 o, vec3 dir){
 
 void main(){
     //vec2 col = normalize(gl_FragCoord.xy-u_poss);
-    vec3 colour = rayMarch(vec3(gl_FragCoord.xy/res,-2.0),vec3(1.0,0.0,0.0))
-    gl_FragColor=vec4(col,0.0,1.0);
+    vec3 colour = rayMarch(vec3(0.0,0.0,-2.0),vec3(1.0,0.0,0.0))
+    gl_FragColor=vec4(0.0,1.0,1.0,1.0);
 }
