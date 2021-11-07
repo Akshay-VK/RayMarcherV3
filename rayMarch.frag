@@ -8,22 +8,14 @@ struct Point3D{
     float dist;
     vec3 col;
 };
-vec3 calc_norm(vec3 p){
-    vec3 step = vec3(0.001,0.0,0.0);
 
-    float grax = sceneSDF(p+step.xyy).dist-sceneSDF(p-step.xyy).dist;
-    float gray = sceneSDF(p+step.yxy).dist-sceneSDF(p-step.yxy).dist;
-    float graz = sceneSDF(p+step.yyx).dist-sceneSDF(p-step.yyx).dist;
-    vec3 norm = vec3(grax,gray,graz);
-    return normalize(norm);
-
-}
 float sphereSDF(vec3 p, vec3 c, float r){
     return length(p-c)-r;
 }
 Point3D sceneSDF(vec3 p){
     return Point3D(sphereSDF(p, vec3(0.0), 1.0),vec3(1.0,0.0,0.0));
 }
+vec3 calc_norm(vec3 p);
 vec3 rayMarch(vec3 o, vec3 dir){
     const float MAX_DIST=100.0;
     const int MAX_ITER = 10;
@@ -49,7 +41,23 @@ vec3 rayMarch(vec3 o, vec3 dir){
     }
     return vec3(0.0);
 }
+vec3 calc_norm(vec3 p){
+    vec3 step = vec3(0.001,0.0,0.0);
 
+    Point3D xa=sceneSDF(p+step.xyy);
+    Point3D xb=sceneSDF(p-step.xyy);
+    Point3D ya=sceneSDF(p+step.yxy);
+    Point3D yb=sceneSDF(p-step.yxy);
+    Point3D za=sceneSDF(p+step.yyx);
+    Point3D zb=sceneSDF(p-step.yyx);
+
+    float grax = xa.dist-xb.dist;
+    float gray = ya.dist-yb.dist;
+    float graz = za.dist-zb.dist;
+    vec3 norm = vec3(grax,gray,graz);
+    return normalize(norm);
+
+}
 void main(){
     //vec2 col = normalize(gl_FragCoord.xy-u_poss);
     vec2 ray = vec2((gl_FragCoord.xy/res)*2.0-1.0);
