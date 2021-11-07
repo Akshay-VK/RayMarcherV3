@@ -8,7 +8,16 @@ struct Point3D{
     float dist;
     vec3 col;
 };
+vec3 calc_norm(vec3 p){
+    vec3 step = vec3(0.001,0.0,0.0);
 
+    float grax = sceneSDF(p+step.xyy).dist-sceneSDF(p-step.xyy).dist;
+    float gray = sceneSDF(p+step.yxy).dist-sceneSDF(p-step.yxy).dist;
+    float graz = sceneSDF(p+step.yyx).dist-sceneSDF(p-step.yyx).dist;
+    vec3 norm = vec3(grax,gray,graz);
+    return normalize(norm);
+
+}
 float sphereSDF(vec3 p, vec3 c, float r){
     return length(p-c)-r;
 }
@@ -21,11 +30,18 @@ vec3 rayMarch(vec3 o, vec3 dir){
     const float EPSILON=0.001;
     float dist=0.0;
     for(int i = 0; i < MAX_ITER; i++){
-        Point3D d = sceneSDF(o+dir*dist);
+        vec3 c_pos = o+dir*dist;
+        Point3D d = sceneSDF(c_pos);
         dist += d.dist;
         if(d.dist<=EPSILON){
             //return vec3(1.0);
-            return d.col;
+            vec3 normal = calc_norm(c_pos);
+            vec3 light_position = vec3(2.0, -5.0, 3.0);
+            vec3 direction_to_light = normalize(c_pos - light_position);
+
+            float diffuse_intensity = max(0.0, dot(normal, direction_to_light));
+
+            return d.col * diffuse_intensity;
         }
         if(dist>=MAX_DIST){
             return vec3(0.0);
