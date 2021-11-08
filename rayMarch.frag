@@ -12,14 +12,40 @@ struct Point3D{
 float sphereSDF(vec3 p, vec3 c, float r){
     return length(p-c)-r;
 }
+float DE(vec3 pos);
 Point3D sceneSDF(vec3 p){
-    return Point3D(sphereSDF(p, vec3(0.0), 1.0),vec3(1.0,0.0,0.0));
+    //return Point3D(sphereSDF(p, vec3(0.0), 1.0),vec3(1.0,0.0,0.0));
+    return Point3D(DE(p),vec3(1.0,0.0,0.0));
 }
 vec3 calc_norm(vec3 p);
+float DE(vec3 pos) {
+	vec3 z = pos;
+	float dr = 1.0;
+	float r = 0.0;
+	for (float i = 0.; i < 10.; i++) {
+		r = length(z);
+		if (r>2.) break;
+		
+		// convert to polar coordinates
+		float theta = acos(z.z/r);
+		float phi = atan(z.y,z.x);
+		dr =  pow( r, 5.0-1.0)*5.0*dr + 1.0;
+		
+		// scale and rotate the point
+		float zr = pow( r,5.0);
+		theta = theta*5.0;//Power
+		phi = phi*5.0;//Power
+		
+		// convert back to cartesian coordinates
+		z = zr*vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+		z+=pos;
+	}
+	return 0.5*log(r)*r/dr;
+}
 vec3 rayMarch(vec3 o, vec3 dir){
     const float MAX_DIST=100.0;
-    const int MAX_ITER = 10;
-    const float EPSILON=0.001;
+    const int MAX_ITER = 200;
+    const float EPSILON=0.0001;
     float dist=0.0;
     for(int i = 0; i < MAX_ITER; i++){
         vec3 c_pos = o+dir*dist;
