@@ -29,12 +29,12 @@ float DE(vec3 pos) {
 		// convert to polar coordinates
 		float theta = acos(z.z/r);
 		float phi = atan(z.y,z.x);
-		dr =  pow( r, 5.0-1.0)*5.0*dr + 1.0;
+		dr =  pow( r, 3.0-1.0)*3.0*dr + 1.0;
 		
 		// scale and rotate the point
-		float zr = pow( r,5.0);
-		theta = theta*5.0;//Power
-		phi = phi*5.0;//Power
+		float zr = pow( r,3.0);
+		theta = theta*3.0;//Power
+		phi = phi*3.0;//Power
 		
 		// convert back to cartesian coordinates
 		z = zr*vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
@@ -88,6 +88,6 @@ void main(){
     //vec2 col = normalize(gl_FragCoord.xy-u_poss);
     vec2 ray = vec2((gl_FragCoord.xy/res)*2.0-1.0);
     ray.x *= res.x/res.y;
-    vec3 colour = rayMarch(vec3(0.0,0.0,-2.0),vec3(ray,1.0));
+    vec3 colour = rayMarch(vec3(0.0,0.0,-3.0),vec3(ray,1.0));
     gl_FragColor=vec4(colour,1.0);
 }
