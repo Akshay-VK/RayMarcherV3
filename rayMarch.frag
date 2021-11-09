@@ -88,6 +88,6 @@ void main(){
     //vec2 col = normalize(gl_FragCoord.xy-u_poss);
     vec2 ray = vec2((gl_FragCoord.xy/res)*2.0-1.0);
     ray.x *= res.x/res.y;
-    vec3 colour = rayMarch(vec3(0.0,0.0,-4.0),vec3(ray,1.0));
+    vec3 colour = rayMarch(vec3(0.0,0.0,-1.0),vec3(ray,1.0));
     gl_FragColor=vec4(colour,1.0);
 }
