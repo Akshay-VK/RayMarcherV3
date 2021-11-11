@@ -15,7 +15,7 @@ function draw(){
     theShader.setUniform('power',[power]);
     if(updatee){
         power += 0.025;
-        if(power == 10){power=0.025;}
+        if(power > 10){power=0.025;}
     }
     
     shader(theShader);
