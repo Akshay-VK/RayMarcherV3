@@ -3,6 +3,9 @@ precision mediump float;
 #endif
 uniform vec2 res;
 uniform float power;
+uniform float u_iter;
+uniform float u_bail;
+
 
 struct Point3D{
     float dist;
@@ -22,9 +25,9 @@ float DE(vec3 pos) {
 	vec3 z = pos;
 	float dr = 1.0;
 	float r = 0.0;
-	for (float i = 0.; i < 10.; i++) {
+	for (float i = 0.; i < u_iter; i++) {
 		r = length(z);
-		if (r>2.) break;
+		if (r>u_bail) break;
 		
 		// convert to polar coordinates
 		float theta = acos(z.z/r);
