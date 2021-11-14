@@ -25,9 +25,9 @@ float DE(vec3 pos) {
 	vec3 z = pos;
 	float dr = 1.0;
 	float r = 0.0;
-	for (float i = 0.; i < u_iter; i++) {
+	for (float i = 0.; i <50; i++) {
 		r = length(z);
-		if (r>u_bail) break;
+		if (r>5) break;
 		
 		// convert to polar coordinates
 		float theta = acos(z.z/r);
